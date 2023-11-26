@@ -1,0 +1,441 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link href="{% static 'css/pdf.css' %}" media="print" rel="stylesheet">
+  <title>Cotización #{{ cotizacion.id }}</title>
+  <meta name="description" content="Invoice demo sample">
+  <meta name="author" content="Kozea">
+</head>
+
+<body>
+  <h1><img src="{% static 'img/logo.png' %}" alt="" style="width: 200px; margin-top: -1.5cm;"></h1>
+
+  <!-- <aside>
+      <address id="from">
+        Weasyprint [ by Kozea ]
+        107 boulevard de Stalingrad
+        69100 Villeurbanne City
+        France
+      </address>
+
+      <address id="to">
+        Our awesome developers
+        From all around the world
+        Earth
+      </address>
+    </aside> -->
+
+  <dl id="informations">
+    <dt>Cotización Nr.</dt>
+    <dd>{{ cotizacion.id }}</dd>
+    <dt>Fecha:</dt>
+    <dd>{% load i18n %}{% language 'es' %}{{ cotizacion.fecha }}
+      {% endlanguage %}</dd>
+  </dl>
+
+  <table class="informacion">
+    <thead>
+
+      <th style="min-width: 50%;">Nombre de cliente</th>
+      <th style="min-width: 25%;">Teléfono</th>
+      <th style="min-width: 25%;">Distrito</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ cotizacion.cliente }}</td>
+        <td>{{ cotizacion.telefono }}</td>
+        <td>{{ cotizacion.distrito }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="informacion">
+    <thead>
+      <th style="min-width: 50%;">Dirección</th>
+      <th style="min-width: 50%;">Correo Electrónico</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ cotizacion.direccion }}</td>
+        <td>{{ cotizacion.email }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="informacion" style="margin-bottom: 0.25cm;">
+    <thead>
+      <th style="text-align: left; padding-bottom: 0;">Detalles</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: left;">{{ cotizacion.adicional|linebreaks }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <table>
+    <thead>
+      <th style="width: 5%;">#</th>
+      <th style="width: 45% !important;">Descripción</th>
+      <th style="width: 5%;">Cantidad</th>
+      <th style="width: 5%;">unidad</th>
+      <th style="width: 20%;">Val. unit.</th>
+      <th style="width: 20%;">Val. total</th>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td scope="row">{{ forloop.counter }}</td>
+        <td style="text-align: left;">{{ item.descripcion }}</td>
+        <td>{{ item.cantidad }}</td>
+        <td>{{ item.unidad }}</td>
+        <td>S./ {{ item.val_unit }}</td>
+        <td>S./ {{ item.total_item }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td scope="row">1</td>
+        <td>No tiene ningún item agregado</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>S./ 0.00</td>
+      </tr>
+      {% endfor %}
+      {% if items.count < 2 %}
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      {% elif items.count == 2 %}
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      {% elif items.count == 3 %}
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      {% elif items.count == 4 %}
+      <tr>
+        <td scope="row">#</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <td scope="row">#</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Subtotal</td>
+        <td>S/. {{ valores.valor_subtotal }}</td>
+      </tr>
+      <tr>
+        <td scope="row">#</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>IGV</td>
+        <td>S/. {{ valores.valor_igv }}</td>
+      </tr>
+    </tbody>
+  </table>
+<!-- lineas adicionales -->
+<div class="texto-adicional">
+  <a class="t-principal">Se emitirá una <b> certificación</b> por el servicio de fumigación para los fines correspondientes.</a> <br>
+  <a class="t-sub">Esperamos poder brindarles nuestros servicios profesionales. Quedamos a su disposición para cualquier consulta. </a>
+</div>
+<!-- cierre lineas -->
+  <table id="total">
+    <thead>
+      <th style="width: 30%;">Servicio</th>
+      <th>Números de cuenta</th>
+      <th style="width: 30%;">Total Final</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="detalles">De 1 a 2 días previa orden.</td>
+        <td class="nums">BBVA: 0011 0323 0100031120 37<br>CCI: 011 323 000100031120 37</td>
+        <td>S./ {{ valores.valor_total }}</td>
+      </tr>
+
+    </tbody>
+  </table>
+<!-- lineas agradecimiento -->
+<div class="texto-final">
+  Atte. Ing. Richard Cabrera | Gerente de Producción | Tel. 989796087
+</div>
+<!-- fin cotizacion -->
+  {% if plantilla == '1covid' %}
+  <div class="completo">
+    <img src="{% static 'img/1-covid-desinfeccion.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == '1v-desinsec' %}
+  <div class="completo">
+    <img src="{% static 'img/3-desinsectacion-1v.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == '2v-desinsec' %}
+  <div class="completo">
+    <img src="{% static 'img/4-desinsectacion-2v.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'des-int' %}
+  <div class="completo">
+    <img src="{% static 'img/2-desinfeccion.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'bio-desrat' %}
+  <div class="completo">
+    <img src="{% static 'img/5-desratizacion-bio.png' %}" alt="">
+  </div>
+
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'bloq-desrat' %}
+  <div class="completo">
+    <img src="{% static 'img/6-desratizacion-bloq.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'covid-desinsec' %}
+  <div class="completo">
+    <img src="{% static 'img/1-covid-desinfeccion.png' %}" alt="">
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/3-desinsectacion-1v.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'desinsec-biorat' %}
+  <div class="completo">
+    <img src="{% static 'img/3-desinsectacion-1v.png' %}" alt="" >
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/5-desratizacion-bio.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'desinsec-biorat-cov' %}
+  <div class="completo">
+    <img src="{% static 'img/3-desinsectacion-1v.png' %}" alt="">
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/5-desratizacion-bio.png' %}" alt="">
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/1-covid-desinfeccion.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'desinsec-bloq-rat' %}
+  <div class="completo">
+    <img src="{% static 'img/3-desinsectacion-1v.png' %}" alt="">
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/6-desratizacion-bloq.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'desinsec-bloq-rat-cov' %}
+  <div class="completo">
+    <img src="{% static 'img/3-desinsectacion-1v.png' %}" alt="">
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/6-desratizacion-bloq.png' %}" alt="">
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/1-covid-desinfeccion.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'tanq-cist' %}
+  <div class="completo">
+    <img src="{% static 'img/7-limpieza-tanque-cisterna.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'extint' %}
+  <div class="completo">
+    <img src="{% static 'img/8-extintores.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'basic' %}
+
+
+
+  {% elif plantilla == 'basic-info' %}
+
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+
+  {% elif plantilla == 'basic-serv-info' %}
+  <div class="completo">
+    <a href="https://neozol.com"><img src="{% static 'img/100-servicios.png' %}" alt=""></a>
+  </div>
+  <div class="completo">
+    <img src="{% static 'img/200-info-final.png' %}" alt="">
+  </div>
+  {% endif %}
+
+  <!-- <div class="completo">
+    <img src="{% static 'img/desinsectacion-1.png' %}" alt="">
+  </div>
+
+  <div class="completo">
+    <img src="{% static 'img/info.png' %}" alt="">
+  </div> -->
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}
+<!-- <link rel="stylesheet" href="{% static 'css/datatables.css' %}" type="text/css"> -->
+<link rel="stylesheet" href="{% static 'css/datatables.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/datatables-bootstrap.css' %}" type="text/css">
+
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <div class="card m-3">
+                <div class="card-header">
+                    Sistema de Cotizaciones
+                </div>
+                <div class="card-body">
+
+                    <p class="text-center"><a href="{% url 'cotizaciones:nueva_cotizacion' %}"
+                            class="btn btn-primary btn-lg"> Nueva cotización </a>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-center">Lista de Cotizaciones anteriores</li>
+                </ul>
+                <div class="card-body">
+                    <div class="table-responsive">
+                    <table id="dataTable" class="table table-striped ">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Valor Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cotizaciones %}
+                            <tr>
+                                <th scope="row">{{ item.id }}</th>
+                                <td><a href="{% url 'cotizaciones:cotizacion' item.id %}">{{ item.cliente }}</a> <a
+                                        href="{% url 'cotizaciones:pdf_basic' item.id %}"><i
+                                            class="fa fa-external-link" aria-hidden="true"></i></a></td>
+                                <td>{% load i18n %}{% language 'es' %}{{ item.fecha|date:"d F Y" }}{% endlanguage %}</td>
+                                <td>{% for cot in valor_cotizacion %}
+                                    {% if cot.cotizacion.id == item.id %}
+                                    {{ cot.valor_total }}
+                                    {% endif %}
+                                    {% endfor %}
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_foot %}
+<script src="{% static 'js/datatables.js' %}" ></script>
+<script src="{% static 'js/datatables-demo.js' %}" ></script>
+{% endblock %}

@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}
+<link href="{% static 'datepicker/datepicker.min.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'datepicker/datepicker.min.js' %}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(e) {
+    $('#slimprimir').change(function(e) {
+        var an = $(this).val();
+        switch(an){         
+    
+    case "1covid": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_1covid' cotizacion.id %}"); break;
+    case "1v-desinsec": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_1v_desinsec' cotizacion.id %}"); break;
+    case "2v-desinsec": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_2v_desinsec' cotizacion.id %}"); break;
+    case "des-int": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_des_int' cotizacion.id %}"); break;
+    case "bio-desrat": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_bio_desrat' cotizacion.id %}"); break;
+    case "bloq-desrat": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_bloq_desrat' cotizacion.id %}"); break;
+    case "covid-desinsec": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_covid_desinsec' cotizacion.id %}"); break;
+    case "desinsec-biorat": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_desinsec_biorat' cotizacion.id %}"); break;
+    case "desinsec-biorat-cov": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_desinsec_biorat_cov' cotizacion.id %}"); break;
+    case "desinsec-bloq-rat": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_desinsec_bloq_rat' cotizacion.id %}"); break;
+    case "desinsec-bloq-rat-cov": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_desinsec_bloq_rat_cov' cotizacion.id %}"); break;
+    case "tanq-cist": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_tanq_cist' cotizacion.id %}"); break;
+    case "extint": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_extint' cotizacion.id %}"); break;
+    case "basic": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_basic' cotizacion.id %}"); break;
+    case "basic-info": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_basic_info' cotizacion.id %}"); break;
+    case "basic-serv-info": $('#btnimprimir').attr('href',"{% url 'cotizaciones:pdf_basic_serv_info' cotizacion.id %}"); break;
+                /* and so on*/
+            }
+    });
+    });
+    </script>
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-11 m-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex">
+                        <a>Cotización Nro. {{ cotizacion.id }}</a>
+                        <div class="ml-auto">
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editarcotizacion">
+                                    <i class="fa fa-edit"></i>
+                                    Editar valores
+                          </button>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class=" col-form-label">Nombre de cliente</label>
+                                <input class="form-control" type="text" placeholder="{{ cotizacion.cliente }}" readonly>
+                                <!-- <div class=" form-control">
+                                    <a>{{ cotizacion.cliente }} </a>
+                                </div> -->
+                            </div>
+                            <div class="col-md-3">
+                                <label class=" col-form-label">Teléfono</label>
+                                <input class="form-control" type="text" placeholder="{{ cotizacion.telefono }}" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label class=" col-form-label">Fecha</label>{% load i18n %}
+                                {% language 'es' %}
+                                <input class="form-control" type="text" placeholder="{{ cotizacion.fecha }}" readonly>{% endlanguage %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class=" col-form-label">Dirección</label>
+                                <input class="form-control" type="text" placeholder="{{ cotizacion.direccion }}" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label class=" col-form-label">Distrito</label>
+                                <input class="form-control" type="text" placeholder="{{ cotizacion.distrito }}" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label class=" col-form-label">Correo electrónico</label>
+                                <input class="form-control" type="text" placeholder="{{ cotizacion.email }}" readonly>
+                            </div>
+                        </div>
+                        <label class=" col-form-label">Detalles adicionales</label>
+                        <!-- <input class="form-control" type="text" placeholder="{{ cotizacion.adicional|linebreaks }}" readonly> -->
+                        <div class="form-control" style="height: 100%;" readonly >{{ cotizacion.adicional|linebreaks }}</div>
+                        
+                    </div>
+                    <br></div>
+                    <ul class="list-group list-group-flush ">
+                        <li class="list-group-item d-flex ">
+                            <a class="align-self-center">Lista de Items</a>
+                            <div class="ml-auto">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formitem">
+                                    <i class="fa fa-list-ul"></i> Agregar Item
+                              </button></div>
+                              
+                        </li>
+
+                      </ul>
+                    
+                    <div class="card-body">
+                    <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 5%;">Eliminar</th>
+                                <th scope="col" style="width: 40% !important;">Descripción</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Unidad</th>
+                                <th scope="col" style="width: 12%;">Valor unit.</th>
+                                <th scope="col">Valor total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                            <tr>
+                                <!-- <th scope="row">{{ forloop.counter }}</th> -->
+                                <td style="text-align: center;">
+                                    <!-- <a href="{% url 'cotizaciones:eliminar_item' item.id %}" class="btn btn-danger">x</a> -->
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminaritem{{ forloop.counter }}">
+                                        <i class="fa fa-trash"></i> 
+                                  </button>
+                                </td>
+                                <td >{{ item.descripcion }}</td>
+                                <td>{{ item.cantidad }}</td>
+                                <td>{{ item.unidad }}</td>
+                                <td>S./ {{ item.val_unit }}</td>
+                                <td>S./ {{ item.total_item }}</td>
+                            </tr>
+                            <!-- empieza modal de eliminar item -->
+                            <div class="modal fade" id="eliminaritem{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">Eliminar item</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    
+                                    <div class="modal-body">
+                                        ¿Seguro que desea eliminar el item: {{ item.descripcion }}?
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                      <a class="btn btn-danger" href="{% url 'cotizaciones:eliminar_item' item.id %}">Eliminar</a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- termina modal -->
+                            {% empty %}
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>No tiene ningún item agregado</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>S./ 0.00</td>
+                            </tr>
+                            {% endfor %}
+                            <tr >
+                                <th scope="row">#</th>
+                                <td colspan="3"> </td>
+                                <td>Subtotal</td>
+                                <td>S/. {{ valores.valor_subtotal }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">#</th>
+                                <td colspan="3"> </td>
+                                <td>Valor IGV (18%)</td>
+                                <td>S/. {{ valores.valor_igv }}</td>
+                            </tr>
+                            <tr >
+                                <th scope="row">#</th>
+                                <td colspan="3"> </td>
+                                <td>Valor Total</td>
+                                <td>S/. {{ valores.valor_total }}</td>
+                            </tr>
+                        </tbody>
+                    </table></div>
+                </div>
+
+                <div class="card-footer">
+                    <!-- <button type="button" class="btn btn-primary">
+                        <i class="fa fa-print"></i> Imprimir
+                  </button> -->
+                  <div class="row justify-content-center">
+                  <div class="col-md-9">
+                  <div class="input-group">
+                    <select id="slimprimir" class="custom-select" >
+                      <option selected>Elegir plantilla...</option>
+                      <option value="1covid">Desinfecion Contra el Covid 19</option>
+                      <option value="1v-desinsec">Desinsectación (1 Visita)</option>
+                      <option value="2v-desinsec">Desinsectación (2 Visitas)</option>
+                      <option value="des-int">Desinfección Integral</option>
+                      <option value="bio-desrat">Desratización con rodenticida biológico</option>
+                      <option value="bloq-desrat">Desratización con rodenticida en bloques</option>
+                      <option value="covid-desinsec">Desinsectación+Desinfecion Covid 19</option>
+                      <option value="desinsec-biorat">Desinsectación+Desratización Bio.</option>
+                      <option value="desinsec-biorat-cov">Desinsectación+Desratización Bio.+Desinfecion Covid 19</option>
+                      <option value="desinsec-bloq-rat">Desinsectación+Desratización Bloq.</option>
+                      <option value="desinsec-bloq-rat-cov">Desinsectación+Desratización Bloq+Desinfecion Covid 19</option>
+                      <option value="tanq-cist">Limpieza y desinf. de tanques y cisternas</option>
+                      <option value="extint">Extintores</option>
+                      <option value="basic">Formato basico</option>
+                      <option value="basic-info">Formato basico+Informacion Corporativa</option>
+                      <option value="basic-serv-info">Formato basico+Servicios+Informacion Corporativa</option>
+
+                    </select>
+                    <div class="input-group-append">
+                      <a id="btnimprimir" class="btn btn-outline-secondary" type="button" href="" target="_blank"><i class="fa fa-print"></i> Imprimir</a>
+                    </div>
+                  </div></div>
+                </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="formitem" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Añadir nuevo item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="" method="POST">
+        <div class="modal-body">
+            {% csrf_token %}
+            {{ form_item.descripcion.label_tag }}{{form_item.descripcion }}
+            {{ form_item.unidad.label_tag }}{{form_item.unidad }}
+            {{ form_item.cantidad.label_tag }}{{form_item.cantidad }}
+            {{ form_item.val_unit.label_tag }} <div class="input-group"> <div class="input-group-prepend mb-3">
+                <div class="input-group-text">S/.</div>
+              </div>{{form_item.val_unit }} </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Añadir</button>
+        </div></form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editarcotizacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Añadir nuevo item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="" method="POST">
+        <div class="modal-body">
+            {% csrf_token %}
+            {{ form_editar_cot }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div></form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

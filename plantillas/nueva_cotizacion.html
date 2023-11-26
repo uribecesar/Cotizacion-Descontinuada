@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}
+
+
+<link href="{% static 'datepicker/datepicker.min.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'datepicker/datepicker.min.js' %}"></script>
+{% endblock %}
+{% block n-c-active %}active{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 mt-3">
+            <div class="card">
+                <div class="card-header">
+                    Nueva Cotizacion
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                    <form class="user" method="POST">{% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">{{ formcotizacion.cliente.label_tag }} {{ formcotizacion.cliente }}</div>
+                            <div class="col-md-3 mb-3">{{ formcotizacion.telefono.label_tag }}{{ formcotizacion.telefono }}</div>
+                            <div class="col-md-3 mb-3">{{ formcotizacion.fecha.label_tag }} <div class="input-group">
+                                {{ formcotizacion.fecha }}<div class="input-group-append">
+                                    <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                                  </div></div></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">{{ formcotizacion.distrito.label_tag }} {{ formcotizacion.distrito }}</div>
+                            <div class="col-md-5 mb-3">{{ formcotizacion.direccion.label_tag }}{{ formcotizacion.direccion }}</div>
+                            <div class="col-md-4 mb-3">{{ formcotizacion.email.label_tag }}{{ formcotizacion.email }}</div>
+                        </div>
+                        {{ formcotizacion.adicional.label_tag }}
+                        {{ formcotizacion.adicional }}
+                        <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary btn-user col-md-4 px-2" >Guardar y añadir items</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

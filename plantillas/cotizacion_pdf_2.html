@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        @page {
+        size: A4; /* Change from the default size of A4 */
+        margin: 0mm; /* Set margin on each page */
+      }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <img src="{% static 'img/top.png' %}" style="width: 100%;" alt="">
+    </header>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            
+            <div class="col-md-10 ">
+                <img src="{% static 'img/logo.png' %}" alt="" style="width: 10%; margin-top: -250px; position: absolute; top: 0px; right: 0px; margin-right: 50px;"><br>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex">
+                            <a>Cotización Nro. {{ cotizacion.id }}</a>
+                            <div class="ml-auto">
+                                <a href="" class="">
+                                    <i class="fa fa-edit"></i>
+                                    Editar valores
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class=" col-form-label">Nombre de cliente</label>
+                                    
+                                    <div class=" form-control">
+                                        <a>{{ cotizacion.cliente }} </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class=" col-form-label">Teléfono</label>
+                                    <div class=" form-control">
+                                        <a>{{ cotizacion.telefono }} </a>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-md-3">
+                                    <label class=" col-form-label">Fecha</label>{% load i18n %}
+                                    {% language 'es' %}
+                                    <div class=" form-control">
+                                        <a>{{ cotizacion.fecha }} </a>
+                                    </div>
+                                    {% endlanguage %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class=" col-form-label">Dirección</label>
+                                    <div class=" form-control">
+                                        <a>{{ cotizacion.direccion }} </a>
+                                    </div>
+                                
+                                </div>
+                                <div class="col-md-3">
+                                    <label class=" col-form-label">Distrito</label>
+                                    <div class=" form-control">
+                                        <a>{{ cotizacion.distrito }} </a>
+                                    </div>
+                                
+                                </div>
+                                <div class="col-md-3">
+                                    <label class=" col-form-label">Correo electrónico</label>
+                                    <div class=" form-control">
+                                        <a>{{ cotizacion.email }} </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class=" col-form-label">Detalles adicionales</label>
+                            <!-- <input class="form-control" type="text" placeholder="{{ cotizacion.adicional|linebreaks }}" readonly> -->
+                            <div class="form-control" style="height: 100%;" readonly >{{ cotizacion.adicional|linebreaks }}</div>
+                            
+                        </div>
+                        <br></div>
+                        <ul class="list-group list-group-flush ">
+                            <li class="list-group-item d-flex ">
+                                <a class="align-self-center">Lista de Items</a>
+                                <div class="ml-auto">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formitem">
+                                        <i class="fa fa-list-ul"></i> Agregar nuevo
+                                  </button></div>
+                                  
+                            </li>
+    
+                          </ul>
+                        
+                        <div class="card-body">
+                        <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Unidad</th>
+                                    <th scope="col">Valor unitario</th>
+                                    <th scope="col">Valor total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in items %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ item.descripcion }}</td>
+                                    <td>{{ item.cantidad }}</td>
+                                    <td>{{ item.unidad }}</td>
+                                    <td>{{ item.val_unit }}</td>
+                                    <td>{{ item.total_item }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Ejemplo Ejemplo Ejemplo </td>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Ejemplo Ejemplo Ejemplo </td>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Ejemplo Ejemplo Ejemplo </td>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+                                {% endfor %}
+                                <tr >
+                                    <th scope="row">#</th>
+                                    <td colspan="3"> </td>
+                                    <td>Subtotal</td>
+                                    <td>{{ valores.valor_subtotal }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">#</th>
+                                    <td colspan="3"> </td>
+                                    <td>Valor IGV (18%)</td>
+                                    <td>{{ valores.valor_igv }}</td>
+                                </tr>
+                                <tr >
+                                    <th scope="row">#</th>
+                                    <td colspan="3"> </td>
+                                    <td>Valor Total</td>
+                                    <td>{{ valores.valor_total }}</td>
+                                </tr>
+                            </tbody>
+                        </table></div>
+                    </div>
+    
+                    <div class="card-footer text-muted text-center">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-print"></i> Imprimir
+                      </button>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                <p>Estaba la pajara pinta  a la sombra del verde limon</p>
+                
+</body>
+<script src="{% static 'js/jquery-3.5.1.min.js' %}" ></script>
+<script src="{% static 'js/bootstrap.min.js' %}" ></script>
+<script src="{% static 'js/popper.min.js' %}" ></script>
+</html>
